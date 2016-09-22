@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.SpringLayout.Constraints;
+
 import org.apache.commons.lang3.text.WordUtils;
 import org.json.simple.*;
 import com.BoxOfC.LevenshteinAutomaton.LevenshteinAutomaton;
@@ -27,6 +29,7 @@ public class Searcher {
 		
 		
 		ArrayList<JSONObject> matches = new ArrayList<JSONObject>();
+		ArrayList<JSONObject> substring_matches = new ArrayList<JSONObject>();
 		
 		
 		
@@ -43,17 +46,42 @@ public class Searcher {
 				
 			if(Math.abs(ed) < EDIT_DISTANCE_THRESHOLD){
 				matches.add((JSONObject) data.get(key));
-					
 			}		
+			else if(((String)key).contains(card)){
+				substring_matches.add((JSONObject)data.get(key));
+			}
 		}
 		
+		Collections.sort(substring_matches, (c1, c2) ->
+					sortByLegendary(c1, c2) + ((String)c1.get("name")).compareTo(((String)c2.get("name")))
+				);
 		
 		Collections.sort(matches, (c1, c2) ->
 					Math.abs(LevenshteinAutomaton.computeEditDistance(card, (String) c1.get("name"))) - 
 					Math.abs(LevenshteinAutomaton.computeEditDistance(card, (String) c2.get("name")))
 				);
+		System.out.println("Substring Matches: " + substring_matches);
+		System.out.println("Edit Distance Matches: " + substring_matches);
+		substring_matches.addAll(matches);
 		
-		return matches.subList(0, Math.min(matches.size(), 3));
+		
+		return substring_matches.subList(0, Math.min(substring_matches.size(), 3));
+	}
+	
+	private static int sortByLegendary(JSONObject c1, JSONObject c2){
+		int sum = 0;
+		
+		JSONArray c1_types  = (JSONArray)c1.get("supertypes");
+		JSONArray c2_types = (JSONArray)c2.get("supertypes");
+		
+		if(c1_types != null && c1_types.lastIndexOf("Legendary") > -1){
+			sum -= 100;
+		}
+		
+		if(c2_types != null && c2_types.lastIndexOf("Legendary") > -1){
+			sum += 100;
+		}
+		return sum;
 	}
 
 	public static String[] sumCards(JSONObject[] cardData) {

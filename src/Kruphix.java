@@ -8,6 +8,7 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import channel_moderation.ChannelHost;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.hooks.ListenerAdapter;
 public class Kruphix extends ListenerAdapter{
 	
 	private JSONObject data;
+	private ChannelHost channel_host;
 
 	public static void main(String[] args) 
 	{
@@ -41,6 +43,7 @@ public class Kruphix extends ListenerAdapter{
 	
 	public Kruphix(){
 		this.loadJSON();
+		this.channel_host = new ChannelHost();
 	}
 	
 	public void loadJSON(){
@@ -62,24 +65,36 @@ public class Kruphix extends ListenerAdapter{
 			e.printStackTrace();
 		}
 	}
-	 @Override
-	 public void onMessageReceived(MessageReceivedEvent event)
-	 {
-		 String[] cards = MessageParser.getCards(event.getMessage().getContent());
-		 
-		 JSONObject[] cardData = Searcher.findCards(cards, data);
-		 
-		 String[] card_summery = Searcher.sumCards(cardData);
-		 
-		 if(card_summery.length > 0){
-			 String message = "\n";
-			 for(String s : card_summery){
-				 message += s + "\n";
-			 }
-			 event.getChannel().sendMessage(message);
+	
+	@Override
+	public void onMessageReceived(MessageReceivedEvent event){
+		
+		
+		
+		 if(event.getMessage().getContent()
+				 .startsWith(channel_host.getChannelCreateCommand())){
+			 channel_host.createChannel(event);
 		 }
+		 else if (event.getMessage().getContent().contains("<<")){
+			 System.out.println(event.getMessage().getContent());
+			 String[] cards = MessageParser.getCards(event.getMessage().getContent());
+			 
+			 JSONObject[] cardData = Searcher.findCards(cards, data);
+			 
+			 String[] card_summery = Searcher.sumCards(cardData);
+			 
+			 if(card_summery.length > 0){
+				 String message = "\n";
+				 for(String s : card_summery){
+					 message += s + "\n";
+				 }
+				 event.getChannel().sendMessage(message);
+			 }
+			 else{
+				 event.getChannel().sendMessage("I know none by that name");
+			 }
 		 
-		 //event.getChannel().sendMessage(cards.length + "");
+		 }
 		 	
 	}
 }
