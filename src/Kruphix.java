@@ -74,6 +74,8 @@ public class Kruphix extends ListenerAdapter{
 		 if(event.getMessage().getContent()
 				 .startsWith(channel_host.getChannelCreateCommand())){
 			 channel_host.createChannel(event);
+			 
+			 
 		 }
 		 else if (event.getMessage().getContent().contains("<<")){
 			 System.out.println(event.getMessage().getContent());
