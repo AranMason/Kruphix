@@ -1,19 +1,14 @@
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.SpringLayout.Constraints;
-
-import org.apache.commons.lang3.text.WordUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.json.simple.*;
-import com.BoxOfC.LevenshteinAutomaton.LevenshteinAutomaton; 
+import org.json.simple.*; 
 
 public class Searcher {
 	
-	private static int EDIT_DISTANCE_THRESHOLD = 3;
+	private static double EDIT_DISTANCE_THRESHOLD = 0.85;
 
 	
 	public static JSONObject[] findCards(String[] cards, JSONObject data){
@@ -40,18 +35,18 @@ public class Searcher {
 						
 			double dist = StringUtils.getJaroWinklerDistance(card, (String)key);
 			
-			if(dist > 0.8){
+			if(dist > EDIT_DISTANCE_THRESHOLD){
 				matches.add(new DataStoreJWDist((JSONObject) data.get(key), dist));
 			}
 			
 			else if (StringUtils.containsIgnoreCase((String)key, card)){
-					//&&	((JSONArray)((JSONObject)data.get(key)).get("supertypes")).contains("Legendary")){
-				
 				results.add((JSONObject)data.get(key));
+				
 			}
 		}
-
 		results.addAll(DataStoreJWDist.getSortedList(matches, -1));
+		Collections.sort(results, (c1, c2) -> sortByLegendary(c1, c2));
+		
 		
 		return results.subList(0, Math.min(results.size(), 3));
 	}

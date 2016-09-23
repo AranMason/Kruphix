@@ -21,6 +21,8 @@ public class Kruphix extends ListenerAdapter{
 	
 	private JSONObject data;
 	private ChannelHost channel_host;
+	
+	private static final int MAX_NUMBER_OF_CHANNELS = 15;
 
 	public static void main(String[] args) 
 	{
@@ -73,7 +75,12 @@ public class Kruphix extends ListenerAdapter{
 		
 		 if(event.getMessage().getContent()
 				 .startsWith(channel_host.getChannelCreateCommand())){
-			 channel_host.createChannel(event);
+			
+			 if(event.getGuild().getVoiceChannels().size() < MAX_NUMBER_OF_CHANNELS)
+				 channel_host.createChannel(event);
+			 else
+				 event.getChannel().sendMessage("Too many channels.");
+			 
 			 
 			 
 		 }
