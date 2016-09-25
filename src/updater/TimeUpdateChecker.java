@@ -1,11 +1,8 @@
 package updater;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import channel_moderation.ChannelHandler;
 import search.Searcher;
 
 public class TimeUpdateChecker extends TimerTask {
@@ -15,10 +12,8 @@ public class TimeUpdateChecker extends TimerTask {
 	private Searcher host;
 	
 	public TimeUpdateChecker(Searcher host, Updater ud) {
-		// TODO Auto-generated constructor stub
 		this.ud = ud;
 		this.host = host;
-		
 	}
 
 	@Override

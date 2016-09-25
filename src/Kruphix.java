@@ -1,18 +1,7 @@
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-
-import javax.security.auth.login.LoginException;
-
 import org.json.simple.*;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import channel_moderation.ChannelHost;
 
 import net.dv8tion.jda.JDA;
@@ -20,19 +9,18 @@ import net.dv8tion.jda.JDABuilder;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
 import parsers.CardSearchParser;
-import parsers.FileReader;
 import parsers.CardSearchParser.SEARCH_REGEX;
 import search.MTGSearcher;
 import search.Searcher;
-import updater.MTGJsonUpdater;
-import updater.TimeUpdateChecker;
 
 
 
 
 public class Kruphix extends ListenerAdapter{
 	
-	private ChannelHost channel_host;
+	private ChannelHost CAHNNEL_HOST;
+	
+	private Searcher MTG_SEARCH;
 
 	public static void main(String[] args) 
 	{
@@ -48,9 +36,10 @@ public class Kruphix extends ListenerAdapter{
 	
 	public Kruphix(){		
 		
-		new MTGSearcher().loadData();
+		MTG_SEARCH = new MTGSearcher();
+		MTG_SEARCH.loadData();
 		
-		this.channel_host = new ChannelHost();
+		CAHNNEL_HOST = new ChannelHost();
 	}
 	
 	@Override
@@ -59,11 +48,11 @@ public class Kruphix extends ListenerAdapter{
 		
 		
 		 if(event.getMessage().getContent()
-				 .startsWith(channel_host.getChannelCreateCommand())){
+				 .startsWith(CAHNNEL_HOST.getChannelCreateCommand())){
 			
 			 //We make sure that the nunber
 			 if(event.getGuild().getVoiceChannels().size() < ChannelHost.MAX_NUMBER_OF_CHANNELS)
-				 channel_host.createChannel(event);
+				 CAHNNEL_HOST.createChannel(event);
 			 else
 				 event.getChannel().sendMessage("Too many channels.");			 
 		 }

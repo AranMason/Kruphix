@@ -16,7 +16,7 @@ public class MTGSearcher implements Searcher {
 	
 	private static double EDIT_DISTANCE_THRESHOLD = 0.85;
 	
-	private static JSONObject data;
+	private JSONObject data;
 	
 	public List<JSONObject> findCardListByName(String card){
 		
@@ -107,12 +107,6 @@ public class MTGSearcher implements Searcher {
 		reply += text;
 		
 		return reply;
-	}
-
-	@Override
-	public String failedSearchMessage() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

@@ -11,8 +11,6 @@ public abstract interface Searcher {
 	public abstract String[] cardListToString(List<JSONObject> cardData);
 	
 	public String cardToString(JSONObject card);
-	
-	public String failedSearchMessage();
 
 	public String printCardList(List<JSONObject> card_data);
 	
