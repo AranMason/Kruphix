@@ -132,19 +132,22 @@ public class MTGSearcher implements Searcher {
 
 	@Override
 	public void loadData() {
+		
+		MTGJsonUpdater update = new MTGJsonUpdater();
+		
 		try {
-			if(!MTGJsonUpdater.checkForUpdates()){
-				data = MTGJsonUpdater.GetLatestJSON();
+			//If our set of data is out of date.
+			if(!update.checkForUpdates()){
+				update.update();
 			}
+			//Once we know that our data is up to date we load it.
+			data = update.loadJSONFile();
+			
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
+		} 		
 	}
 
 }
