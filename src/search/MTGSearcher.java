@@ -2,14 +2,12 @@ package search;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.*;
 
-import data_package.DataStoreJWDist;
-import net.dv8tion.jda.events.message.MessageReceivedEvent; 
+import data_package.DataStoreJWDist; 
 
 public class MTGSearcher implements Searcher {
 	

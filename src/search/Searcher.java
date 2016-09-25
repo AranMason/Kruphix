@@ -1,11 +1,8 @@
 package search;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.json.simple.JSONObject;
-
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
 public abstract interface Searcher {
 		
