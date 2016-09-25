@@ -1,3 +1,4 @@
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -55,7 +56,7 @@ public class Kruphix extends ListenerAdapter{
 		JSONParser p = new JSONParser();
 		
 		try {
-			FileInputStream fi = new FileInputStream("../Kruphix/data/AllCards.json");
+			FileInputStream fi = new FileInputStream("data/AllCards.json");
 			InputStreamReader f = new InputStreamReader(fi, "UTF-8");
 			
 			
