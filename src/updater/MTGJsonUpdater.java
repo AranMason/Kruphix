@@ -52,7 +52,7 @@ public class MTGJsonUpdater implements Updater{
 		try{
 			return parsers.FileReader.loadJSON(LOCAL_ALLCARDS);
 		} catch(Exception e){
-			//TODO Handle Properly.
+			System.err.println(e);
 		}
 		return null;
 	}
@@ -74,5 +74,9 @@ public class MTGJsonUpdater implements Updater{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateTimer(){
+		
 	}
 }

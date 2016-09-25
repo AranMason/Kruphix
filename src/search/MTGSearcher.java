@@ -1,7 +1,5 @@
 package search;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,13 +8,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.simple.*;
 
 import data_package.DataStoreJWDist;
-import updater.MTGJsonUpdater; 
+import updater.MTGJsonUpdater;
+import updater.TimeUpdateChecker; 
 
 public class MTGSearcher implements Searcher {
 	
 	private static double EDIT_DISTANCE_THRESHOLD = 0.85;
 	
 	private JSONObject data;
+	
+	public MTGSearcher(){
+		new TimeUpdateChecker(this);
+	}
 	
 	public List<JSONObject> findCardListByName(String card){
 		
