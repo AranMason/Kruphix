@@ -11,6 +11,8 @@ public class ChannelHost {
 	private final static String CHANNEL_CREATE_COMMAND = "!channel";
 	//The default name for any new channel, when a name is not given.
 	private final static String DEFAULT_CHANNEL_NAME = "TempChannel";
+	//The maximum number of channels we wish to support before moderator have to create.
+	public static final int MAX_NUMBER_OF_CHANNELS = 15;
 
 	public String getChannelCreateCommand() {
 		return CHANNEL_CREATE_COMMAND;

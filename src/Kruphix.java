@@ -2,9 +2,12 @@
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.security.auth.login.LoginException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -13,8 +16,13 @@ import channel_moderation.ChannelHost;
 
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
+import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
+import parsers.CardSearchParser;
+import parsers.CardSearchParser.SEARCH_REGEX;
+import search.MTGSearcher;
+import search.Searcher;
 
 
 //https://discordapp.com/oauth2/authorize?client_id=228458079337971722&scope=bot&permissions=0
@@ -23,8 +31,6 @@ public class Kruphix extends ListenerAdapter{
 	
 	private JSONObject data;
 	private ChannelHost channel_host;
-	
-	private static final int MAX_NUMBER_OF_CHANNELS = 15;
 
 	public static void main(String[] args) 
 	{
@@ -78,32 +84,30 @@ public class Kruphix extends ListenerAdapter{
 		 if(event.getMessage().getContent()
 				 .startsWith(channel_host.getChannelCreateCommand())){
 			
-			 if(event.getGuild().getVoiceChannels().size() < MAX_NUMBER_OF_CHANNELS)
+			 //We make sure that the nunber
+			 if(event.getGuild().getVoiceChannels().size() < ChannelHost.MAX_NUMBER_OF_CHANNELS)
 				 channel_host.createChannel(event);
 			 else
-				 event.getChannel().sendMessage("Too many channels.");
-			 
-			 
-			 
+				 event.getChannel().sendMessage("Too many channels.");			 
 		 }
-		 else if (event.getMessage().getContent().contains("<<")){
-			 System.out.println(event.getMessage().getContent());
-			 String[] cards = MessageParser.getCards(event.getMessage().getContent());
+		 else if (CardSearchParser.containsMatches(
+				 event.getMessage().getContent(), 
+				 SEARCH_REGEX.MAGIC_THE_GATHERING)){
+			 //We create a search object for the given card game
+			 Searcher m = new MTGSearcher();
+			 //We parse the string that we need to match out of the message. Using a set regex.
+			 String[] cards = CardSearchParser
+					 .getMatchingCards(event.getMessage().getContent(), 
+							 SEARCH_REGEX.MAGIC_THE_GATHERING);
 			 
-			 JSONObject[] cardData = Searcher.findCards(cards, data);
-			 
-			 String[] card_summery = Searcher.sumCards(cardData);
-			 
-			 if(card_summery.length > 0){
-				 String message = "\n";
-				 for(String s : card_summery){
-					 message += s + "\n";
-				 }
-				 event.getChannel().sendMessage(message);
+			 //
+			 List<JSONObject> cardData = new ArrayList<JSONObject>();
+			 //For each of the entries in the message to search for, we search for a list of potential matches.
+			 for(String card_name : cards){
+				 cardData.addAll(m.findCardListByName(card_name, data));
 			 }
-			 else{
-				 event.getChannel().sendMessage("I know none by that name");
-			 }
+			 //We ask the Searcher to summaries the list of cards for printing as a message.
+			 event.getChannel().sendMessage(m.printCardList(cardData));
 		 
 		 }
 		 	
