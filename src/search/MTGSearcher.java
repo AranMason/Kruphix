@@ -135,19 +135,13 @@ public class MTGSearcher implements Searcher {
 		
 		MTGJsonUpdater update = new MTGJsonUpdater();
 		
-		try {
-			//If our set of data is out of date.
-			if(!update.checkForUpdates()){
-				update.update();
-			}
-			//Once we know that our data is up to date we load it.
-			data = update.loadJSONFile();
+		
+		//Update the local data if it is out of date.
+		update.update();
+		//Once we know that our data is up to date we load it.
+		data = update.loadJSONFile();
 			
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 		
+				
 	}
 
 }

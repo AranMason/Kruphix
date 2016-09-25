@@ -58,7 +58,21 @@ public class MTGJsonUpdater implements Updater{
 	}
 
 	public void update() {
-		// TODO Auto-generated method stub
 		//Updates the local file of the JSON object to the most recent one.
+		
+		//Check if the current version is up to date.
+		try {
+			if(!this.checkForUpdates()){
+				System.out.println("Local Copies out of date.");
+				FileReader.downloadFile(ALLCARDS_URI, LOCAL_ALLCARDS);
+				FileReader.downloadFile(VERSION_URI, LOCAL_VERSION);
+			}
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
