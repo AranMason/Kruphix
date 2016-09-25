@@ -46,6 +46,8 @@ public class MTGJsonUpdater {
 	}
 	
 	private static JSONObject downloadMTGJson(String uri){
+		
+			//TODO
 		return null;
 		
 	}

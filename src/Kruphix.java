@@ -28,41 +28,29 @@ import updater.MTGJsonUpdater;
 import updater.TimeUpdateChecker;
 
 
-//https://discordapp.com/oauth2/authorize?client_id=228458079337971722&scope=bot&permissions=0
+
 
 public class Kruphix extends ListenerAdapter{
 	
-	private JSONObject data;
 	private ChannelHost channel_host;
 
 	public static void main(String[] args) 
 	{
 		JDA jda;
 		try {
-			jda = new JDABuilder().setBotToken("MjI4NDU4MDc5MzM3OTcxNzIy.CsU_sA.vkvhsgO5CvvasFHsKt8agQdpGHg").buildBlocking();
+			jda = new JDABuilder().setBotToken(args[0]).buildBlocking();
 			jda.addEventListener(new Kruphix());
-		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e){
+			System.err.println(e);
 		}
 		
 	}
 	
 	public Kruphix(){		
-		Timer t = new Timer();
-		t.schedule(new TimeUpdateChecker(this, new MTGJsonUpdater()), 5);
+		
+		new MTGSearcher().loadData();
 		
 		this.channel_host = new ChannelHost();
-	}
-	
-	public void setData(JSONObject data){
-		this.data = data;
 	}
 	
 	@Override
@@ -93,7 +81,7 @@ public class Kruphix extends ListenerAdapter{
 			 List<JSONObject> cardData = new ArrayList<JSONObject>();
 			 //For each of the entries in the message to search for, we search for a list of potential matches.
 			 for(String card_name : cards){
-				 cardData.addAll(m.findCardListByName(card_name, data));
+				 cardData.addAll(m.findCardListByName(card_name));
 			 }
 			 //We ask the Searcher to summaries the list of cards for printing as a message.
 			 event.getChannel().sendMessage(m.printCardList(cardData));

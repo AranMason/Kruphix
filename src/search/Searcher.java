@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 
 public abstract interface Searcher {
 		
-	public abstract List<JSONObject> findCardListByName(String card, JSONObject data);
+	public abstract List<JSONObject> findCardListByName(String card);
 	
 	public abstract String[] cardListToString(List<JSONObject> cardData);
 	
@@ -14,5 +14,9 @@ public abstract interface Searcher {
 	
 	public String failedSearchMessage();
 
-	String printCardList(List<JSONObject> card_data);
+	public String printCardList(List<JSONObject> card_data);
+	
+	public void setData(JSONObject data);
+	
+	public abstract void loadData();
 }

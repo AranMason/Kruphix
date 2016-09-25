@@ -1,5 +1,7 @@
 package search;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,14 +9,16 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.*;
 
-import data_package.DataStoreJWDist; 
+import data_package.DataStoreJWDist;
+import updater.MTGJsonUpdater; 
 
 public class MTGSearcher implements Searcher {
 	
 	private static double EDIT_DISTANCE_THRESHOLD = 0.85;
-
 	
-	public List<JSONObject> findCardListByName(String card, JSONObject data){
+	private static JSONObject data;
+	
+	public List<JSONObject> findCardListByName(String card){
 		
 		List<JSONObject> results = new ArrayList<JSONObject>();
 		
@@ -125,6 +129,28 @@ public class MTGSearcher implements Searcher {
 		 else{
 			 return ("I know none by that name");
 		 }
+	}
+
+	@Override
+	public void setData(JSONObject data) {
+		this.data = data;
+	}
+
+	@Override
+	public void loadData() {
+		try {
+			if(!MTGJsonUpdater.checkForUpdates()){
+				data = MTGJsonUpdater.GetLatestJSON();
+			}
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }

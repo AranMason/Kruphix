@@ -6,15 +6,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import channel_moderation.ChannelHandler;
+import search.Searcher;
 
 public class TimeUpdateChecker extends TimerTask {
 	
 	private static final long CHECK_FREQUENCY = 0;
 	private Updater ud;
+	private Searcher host;
 	
-	public TimeUpdateChecker(Kruphix host, Updater ud) {
+	public TimeUpdateChecker(Searcher host, Updater ud) {
 		// TODO Auto-generated constructor stub
-		
+		this.ud = ud;
+		this.host = host;
 		
 	}
 
@@ -25,7 +28,7 @@ public class TimeUpdateChecker extends TimerTask {
 			ud.update();
 		}
 		Timer t = new Timer();
-		t.schedule(new TimeUpdateChecker(host), CHECK_FREQUENCY);
+		t.schedule(new TimeUpdateChecker(host, ud), CHECK_FREQUENCY);
 	}
 
 }
