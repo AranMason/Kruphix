@@ -17,11 +17,12 @@ public class TimeUpdateChecker extends TimerTask {
 
 	@Override
 	public void run() {
+		System.out.println("Checking for Updates for " + host.toString());
 		
 		host.loadData();
 		
 		Timer t = new Timer();
-				t.schedule(new TimeUpdateChecker(host), CHECK_FREQUENCY);;
+				t.schedule(new TimeUpdateChecker(host), CHECK_FREQUENCY);
 		
 		
 	}

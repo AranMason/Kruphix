@@ -3,23 +3,17 @@ package search;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.*;
 
 import data_package.DataStoreJWDist;
-import updater.MTGJsonUpdater;
-import updater.TimeUpdateChecker; 
+import updater.MTGJsonUpdater; 
 
-public class MTGSearcher implements Searcher {
+public class MTGSearcher extends Searcher {
 	
 	private static double EDIT_DISTANCE_THRESHOLD = 0.85;
 	
 	private JSONObject data;
-	
-	public MTGSearcher(){
-		new TimeUpdateChecker(this);
-	}
 	
 	public List<JSONObject> findCardListByName(String card){
 		
@@ -135,14 +129,13 @@ public class MTGSearcher implements Searcher {
 
 	@Override
 	public void loadData() {
-		
+		System.out.println("Loading Data Set");
 		MTGJsonUpdater update = new MTGJsonUpdater();
-		
-		
 		//Update the local data if it is out of date.
 		update.update();
 		//Once we know that our data is up to date we load it.
 		data = update.loadJSONFile();
+		System.out.println("Data: " + data);
 			
 				
 	}

@@ -26,7 +26,7 @@ public class FileReader {
 			try {
 				f = new InputStreamReader(fi, "UTF-8");
 				return (JSONObject)p.parse(f);
-			} catch (UnsupportedEncodingException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
