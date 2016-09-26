@@ -1,6 +1,8 @@
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.*;
 import channel_moderation.ChannelHost;
 
@@ -49,8 +51,8 @@ public class Kruphix extends ListenerAdapter{
 		
 		
 		
-		 if(event.getMessage().getContent()
-				 .startsWith(CHANNEL_HOST.getChannelCreateCommand())){
+		 if(StringUtils.startsWithIgnoreCase(event.getMessage().getContent(),
+				 CHANNEL_HOST.getChannelCreateCommand())){
 			
 			 //We make sure that the nunber
 			 if(event.getGuild().getVoiceChannels().size() < ChannelHost.MAX_NUMBER_OF_CHANNELS)
