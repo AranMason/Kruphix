@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class CardSearchParser {
-	
+	private static double EDIT_DISTANCE_THRESHOLD = 0.95;
 	public enum SEARCH_REGEX{
 		MAGIC_THE_GATHERING {
 			public String toString() {
@@ -27,8 +29,24 @@ public class CardSearchParser {
 			if(!cards.contains(temp))
 				cards.add(truncateEdge(m.group()));
 		}
-
-		return cards.toArray(new String[cards.size()]);
+		ArrayList<String> noDupCards = new ArrayList<String>();
+		for(String card: cards){
+			boolean noMatch = true;
+			//Check if a card already in the list matches
+			for(String cardND: noDupCards){
+				double dist = StringUtils.getJaroWinklerDistance(card, cardND);
+				if(dist > EDIT_DISTANCE_THRESHOLD){
+					noMatch = false;
+					break;
+				}
+			}
+			//If not add it
+			if(noMatch == true){
+				noDupCards.add(card);
+			}
+		}
+		
+		return noDupCards.toArray(new String[noDupCards.size()]);
 				
 	}
 	

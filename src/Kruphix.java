@@ -69,6 +69,7 @@ public class Kruphix extends ListenerAdapter{
 			 for(String card_name : cards){
 				 cardData.addAll(MTG_SEARCH.findCardListByName(card_name));
 			 }
+			 
 			 //We ask the Searcher to summaries the list of cards for printing as a message.
 			 event.getChannel().sendMessage(MTG_SEARCH.printCardList(cardData));
 		 
