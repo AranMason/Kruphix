@@ -9,7 +9,7 @@ public interface Updater {
 
 	public abstract boolean checkForUpdates() throws MalformedURLException, IOException;
 	
-	public abstract JSONObject loadJSONFile();
+	public abstract Object loadJSONFile();
 	
 	public abstract void update();
 }

@@ -15,7 +15,7 @@ import org.json.simple.parser.ParseException;
 public class FileReader {
 
 	
-	public static JSONObject loadJSON(String address) throws IOException, ParseException{
+	public static Object loadJSON(String address) throws IOException, ParseException{
 		
 		
 		JSONParser p = new JSONParser();
@@ -25,14 +25,13 @@ public class FileReader {
 			InputStreamReader f;
 			try {
 				f = new InputStreamReader(fi, "UTF-8");
-				return (JSONObject)p.parse(f);
+				return p.parse(f);
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally {
+				fi.close();
 			}
-			
-			
-		
-		return null;
+			return null;
 	}
 
 	public static void downloadFile(String uri, String target) {

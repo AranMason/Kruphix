@@ -11,10 +11,6 @@ import updater.MTGJsonUpdater;
 
 public class MTGSearcher extends Searcher {
 	
-
-	
-	private JSONObject data;
-	
 	public List<JSONObject> findCardListByName(String card){
 		
 		List<JSONObject> results = new ArrayList<JSONObject>();
@@ -94,12 +90,6 @@ public class MTGSearcher extends Searcher {
 		
 		return reply;
 	}
-	
-
-	@Override
-	public void setData(JSONObject data) {
-		this.data = data;
-	}
 
 	@Override
 	public void loadData() {
@@ -110,6 +100,12 @@ public class MTGSearcher extends Searcher {
 		//Once we know that our data is up to date we load it.
 		data = update.loadJSONFile();
 		System.out.println("Data: " + data);			
+	}
+
+	@Override
+	public void setData(Object data) {
+		super.data = (JSONObject) data;
+		
 	}
 
 }

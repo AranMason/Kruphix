@@ -46,7 +46,7 @@ public class MTGJsonUpdater implements Updater{
 		      //Reading Local Version
 		      String webVersion = sb.toString();
 		  
-		      JSONObject local_ver = FileReader.loadJSON(LOCAL_VERSION);
+		      JSONObject local_ver = (JSONObject)FileReader.loadJSON(LOCAL_VERSION);
 		      String local = local_ver.toJSONString();
 		      
 		      //If they are equal then we are still up to date, otherwise there is a version difference.
@@ -67,7 +67,7 @@ public class MTGJsonUpdater implements Updater{
 
 	public JSONObject loadJSONFile() {
 		try{
-			return parsers.FileReader.loadJSON(LOCAL_ALLCARDS);
+			return (JSONObject) parsers.FileReader.loadJSON(LOCAL_ALLCARDS);
 		} catch(Exception e){
 			System.err.println(e);
 		}

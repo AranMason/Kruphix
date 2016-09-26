@@ -33,9 +33,7 @@ public abstract class Searcher {
 	
 	public abstract String cardToString(JSONObject card);
 	
-	public void setData(JSONObject data){
-		this.data = data;
-	}
+	public abstract void setData(Object data);
 	
 	public abstract void loadData();
 	
