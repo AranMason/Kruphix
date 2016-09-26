@@ -7,8 +7,8 @@ import search.Searcher;
 
 public class TimeUpdateChecker extends TimerTask {
 	
-	//Currently checks every 24 hours.
-	private static final long CHECK_FREQUENCY = 86400000;
+	//Currently checks every weekly.
+	private static final long CHECK_FREQUENCY = 604800000;
 	private Searcher host;
 	
 	public TimeUpdateChecker(Searcher host) {
