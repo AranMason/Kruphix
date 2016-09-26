@@ -7,8 +7,8 @@ import search.Searcher;
 
 public class TimeUpdateChecker extends TimerTask {
 	
-	//Currently 2 hours
-	private static final long CHECK_FREQUENCY = 7200000;
+	//Currently checks every 24 hours.
+	private static final long CHECK_FREQUENCY = 86400000;
 	private Searcher host;
 	
 	public TimeUpdateChecker(Searcher host) {
@@ -22,7 +22,7 @@ public class TimeUpdateChecker extends TimerTask {
 		host.loadData();
 		
 		Timer t = new Timer();
-				t.schedule(new TimeUpdateChecker(host), CHECK_FREQUENCY);
+		t.schedule(new TimeUpdateChecker(host), CHECK_FREQUENCY);
 		
 		
 	}
