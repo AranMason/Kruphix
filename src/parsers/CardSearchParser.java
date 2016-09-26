@@ -13,6 +13,11 @@ public class CardSearchParser {
 			public String toString() {
 		        return "<<([^<>]*)>>";
 		    }
+		},
+		HEARTHSTONE{
+			public String toString(){
+				return "\\[\\[([^\\[\\]]*)\\]\\]";
+			}
 		};
 	}
 	

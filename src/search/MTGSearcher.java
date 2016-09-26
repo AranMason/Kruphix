@@ -11,7 +11,7 @@ import updater.MTGJsonUpdater;
 
 public class MTGSearcher extends Searcher {
 	
-	private static double EDIT_DISTANCE_THRESHOLD = 0.85;
+
 	
 	private JSONObject data;
 	
@@ -50,7 +50,7 @@ public class MTGSearcher extends Searcher {
 		Collections.sort(results, (c1, c2) -> sortByLegendary(c1, c2));
 		
 		
-		return results.subList(0, Math.min(results.size(), 3));
+		return getResultSubList(results);
 	}
 	
 	private static int sortByLegendary(JSONObject c1, JSONObject c2){
@@ -67,17 +67,6 @@ public class MTGSearcher extends Searcher {
 			sum += 100;
 		}
 		return sum;
-	}
-
-	public String[] cardListToString(List<JSONObject> cardData) {
-		String[] s = new String[cardData.size()];
-		int i = 0;
-		for(JSONObject obj : cardData){
-			if(i > 5)
-				break;
-			s[i++] = cardToString(obj);
-		}
-		return s;
 	}
 	
 	public String cardToString(JSONObject card){
@@ -105,22 +94,7 @@ public class MTGSearcher extends Searcher {
 		
 		return reply;
 	}
-
-	@Override
-	public String printCardList(List<JSONObject> card_data) {
-		String[] card_summery = cardListToString(card_data);
-		 
-		 if(card_summery.length > 0){
-			 String message = "\n";
-			 for(String s : card_summery){
-				 message += s + "\n";
-			 }
-			 return (message);
-		 }
-		 else{
-			 return ("I know none by that name");
-		 }
-	}
+	
 
 	@Override
 	public void setData(JSONObject data) {
@@ -135,9 +109,7 @@ public class MTGSearcher extends Searcher {
 		update.update();
 		//Once we know that our data is up to date we load it.
 		data = update.loadJSONFile();
-		System.out.println("Data: " + data);
-			
-				
+		System.out.println("Data: " + data);			
 	}
 
 }
