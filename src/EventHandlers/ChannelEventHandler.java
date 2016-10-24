@@ -22,7 +22,7 @@ public class ChannelEventHandler extends ListenerAdapter{
 		 if(StringUtils.startsWithIgnoreCase(event.getMessage().getContent(),
 				 CHANNEL_HOST.getChannelCreateCommand())){
 			
-			 //We make sure that the nunber
+			 //We make sure that the number
 			 if(event.getGuild().getVoiceChannels().size() < ChannelHost.MAX_NUMBER_OF_CHANNELS)
 				 CHANNEL_HOST.createChannel(event);
 			 else

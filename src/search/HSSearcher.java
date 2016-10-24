@@ -14,13 +14,14 @@ import updater.HSJsonUpdater;
 public class HSSearcher extends Searcher{
 	
 	private JSONArray hs_data;
-
+	
 	@Override
 	public List<JSONObject> findCardListByName(String card) {
 		
 		List<JSONObject> substring_matches = new ArrayList<JSONObject>();
 		List<DataStoreJWDist> edit_dist_matches = new ArrayList<DataStoreJWDist>();
 		
+		@SuppressWarnings("unchecked")
 		Iterator<JSONObject> hs_search = hs_data.iterator();
 		while(hs_search.hasNext()){
 			JSONObject next = hs_search.next();
