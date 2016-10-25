@@ -3,8 +3,6 @@ package updater;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import parsers.FileReader;

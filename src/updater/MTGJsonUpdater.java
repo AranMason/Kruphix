@@ -29,7 +29,7 @@ public class MTGJsonUpdater implements Updater{
 		
 		InputStream is = new URL(VERSION_URI).openStream();
 	    try {
-	    		System.out.println("Creating Buffer");
+	    	System.out.println("Creating Buffer");
 	    	BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 	      	System.out.println("Reading Buffer");
 	      

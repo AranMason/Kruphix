@@ -98,8 +98,7 @@ public class MTGSearcher extends Searcher {
 		//Update the local data if it is out of date.
 		update.update();
 		//Once we know that our data is up to date we load it.
-		data = update.loadJSONFile();
-		System.out.println("Data: " + data);			
+		data = update.loadJSONFile();	
 	}
 
 	@Override
