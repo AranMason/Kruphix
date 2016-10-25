@@ -82,6 +82,10 @@ public class MTGSearcher extends Searcher {
 			String power = (String) card.get("power");
 			String toughness = (String) card.get("toughness");
 			reply += " \t[" + power + "/" + toughness + "]\n";
+		}else if(card.containsKey("loyalty")){
+			Integer loyalty = (int) card.get("loyalty");
+			
+			reply += "{" + loyalty + "}";
 		}else{
 			reply += "\n";
 		}
