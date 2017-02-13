@@ -1,4 +1,4 @@
-package EventHandlers;
+package event_handlers;
 
 import org.apache.commons.lang3.StringUtils;
 

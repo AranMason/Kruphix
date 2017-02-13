@@ -1,5 +1,5 @@
 
-import EventHandlers.*;
+import event_handlers.*;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
 
@@ -17,6 +17,7 @@ public class Kruphix{
 			jda.addEventListener(new ChannelEventHandler());
 			jda.addEventListener(new HSEventHandler());
 			jda.addEventListener(new MCIEventHandler());
+			jda.addEventListener(new VideoClientEventHandler());
 		} catch (Exception e){
 			System.err.println(e);
 		}

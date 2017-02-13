@@ -1,4 +1,4 @@
-package EventHandlers;
+package event_handlers;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

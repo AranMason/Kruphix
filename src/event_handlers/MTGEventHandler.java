@@ -1,4 +1,4 @@
-package EventHandlers;
+package event_handlers;
 
 import java.util.ArrayList;
 import java.util.List;
