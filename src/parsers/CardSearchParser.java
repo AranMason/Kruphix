@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class CardSearchParser {
 	private static double EDIT_DISTANCE_THRESHOLD = 0.95;
+	
 	public enum SEARCH_REGEX{
 		MAGIC_THE_GATHERING {
 			public String toString() {

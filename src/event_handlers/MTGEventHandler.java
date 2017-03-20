@@ -33,14 +33,20 @@ public class MTGEventHandler extends ListenerAdapter{
 								 SEARCH_REGEX.MAGIC_THE_GATHERING);
 					 
 				//
-				List<JSONObject> cardData = new ArrayList<JSONObject>();
+				
 				//For each of the entries in the message to search for, we search for a list of potential matches.
-				for(String card_name : cards){
-					 cardData.addAll(MTG_SEARCH.findCardListByName(card_name));
-				}
-					 
-				//We ask the Searcher to summaries the list of cards for printing as a message.
-				event.getChannel().sendMessage(MTG_SEARCH.printCardList(cardData));
+				//Each card request is its own message.
+				for(int i = 0; i < cards.length; i++){
+					String message = "";
+					List<JSONObject> cardData = new ArrayList<JSONObject>();
+					//We find potential cards
+					cardData.addAll(MTG_SEARCH.findCardListByName(cards[i]));
+					//We add the card to the message
+					message += MTG_SEARCH.printCardList(cardData);
+					//Send the message
+					event.getChannel().sendMessage(message);			
+					
+				}				
 			 
 			} 
 	}

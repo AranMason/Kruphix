@@ -16,7 +16,7 @@ public class MTGSearcher extends Searcher {
 		List<JSONObject> results = new ArrayList<JSONObject>();
 		
 		//A list of all matching cards
-		ArrayList<DataStoreJWDist> edit_distance_macthes = new ArrayList<DataStoreJWDist>();
+		ArrayList<DataStoreJWDist> edit_distance_matches = new ArrayList<DataStoreJWDist>();
 		
 		//Otherwise we iterate through the list to find all cards within an edit distance of the given threshold.
 		for(Object key : data.keySet()){
@@ -34,7 +34,7 @@ public class MTGSearcher extends Searcher {
 			double dist = StringUtils.getJaroWinklerDistance(card, name);
 			
 			if(dist > EDIT_DISTANCE_THRESHOLD){
-				edit_distance_macthes.add(new DataStoreJWDist((JSONObject) data.get(key), dist));
+				edit_distance_matches.add(new DataStoreJWDist((JSONObject) data.get(key), dist));
 			}
 			//Also if there is an exact substring.
 			else if (StringUtils.containsIgnoreCase(name, card)){
@@ -42,7 +42,11 @@ public class MTGSearcher extends Searcher {
 				
 			}
 		}
-		results.addAll(DataStoreJWDist.getSortedList(edit_distance_macthes, -1));
+		
+		
+		results.addAll(DataStoreJWDist.getSortedList(edit_distance_matches, -1));
+		
+		//Priorities Legendary creatures, as these are special characters in MTG, and are more likely the subject of the search.
 		Collections.sort(results, (c1, c2) -> sortByLegendary(c1, c2));
 		
 		
@@ -76,7 +80,7 @@ public class MTGSearcher extends Searcher {
 		if(text == null)
 			text = "";
 		
-		String reply = "**"+name+"** \t" + cost + "\n" + type; 
+		String reply = "__**"+name+"**__ \t" + cost + "\n" + type; 
 		
 		if(card.containsKey("power")){
 			String power = (String) card.get("power");
@@ -85,7 +89,7 @@ public class MTGSearcher extends Searcher {
 		}else if(card.containsKey("loyalty")){
 			Integer loyalty = (int) card.get("loyalty");
 			
-			reply += "{" + loyalty + "}";
+			reply += "\t{" + loyalty + "}";
 		}else{
 			reply += "\n";
 		}

@@ -20,6 +20,8 @@ public abstract class Searcher {
 		
 	public abstract List<JSONObject> findCardListByName(String card);
 	
+	
+	//Turns an array of JSON objects into strings for printing out.
 	public String[] cardListToString(List<JSONObject> cardData) {
 		String[] s = new String[cardData.size()];
 		int i = 0;
@@ -31,11 +33,13 @@ public abstract class Searcher {
 		return s;
 	}
 	
+	//Turns a give JSON object into a string representation for output.
 	public abstract String cardToString(JSONObject card);
 	
 	public abstract void setData(Object data);
 	
 	public abstract void loadData();
+	
 	
 	protected List<JSONObject> getResultSubList(List<JSONObject> results){
 		return results.subList(0, Math.min(results.size(), MAX_SEARCH_RESULTS));
@@ -52,7 +56,7 @@ public abstract class Searcher {
 			 return (message);
 		 }
 		 else{
-			 return ("I know none by that name");
+			 return ("That prophecy cannot be fulfilled");
 		 }
 	}
 }
