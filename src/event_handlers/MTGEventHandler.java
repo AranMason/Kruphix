@@ -23,13 +23,16 @@ public class MTGEventHandler extends ListenerAdapter{
 	
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event){
+		
+		String message = event.getMessage().getContent();
 	
 			if (CardSearchParser.containsMatches(
-				 event.getMessage().getContent(), 
+				 message, 
 				 SEARCH_REGEX.MAGIC_THE_GATHERING)){
+				
 				//We parse the string that we need to match out of the message. Using a set regex.
 				String[] cards = CardSearchParser
-						 .getMatchingCards(event.getMessage().getContent(), 
+						 .getMatchingCards(message, 
 								 SEARCH_REGEX.MAGIC_THE_GATHERING);
 					 
 				//
@@ -37,14 +40,18 @@ public class MTGEventHandler extends ListenerAdapter{
 				//For each of the entries in the message to search for, we search for a list of potential matches.
 				//Each card request is its own message.
 				for(int i = 0; i < cards.length; i++){
-					String message = "";
+					
+					
+					
+					String output = "";
+					
 					List<JSONObject> cardData = new ArrayList<JSONObject>();
 					//We find potential cards
 					cardData.addAll(MTG_SEARCH.findCardListByName(cards[i]));
 					//We add the card to the message
-					message += MTG_SEARCH.printCardList(cardData);
+					output += MTG_SEARCH.printCardList(cardData);
 					//Send the message
-					event.getChannel().sendMessage(message);			
+					event.getChannel().sendMessage(output);			
 					
 				}				
 			 
