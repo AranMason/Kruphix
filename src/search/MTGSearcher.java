@@ -11,6 +11,8 @@ import updater.MTGJsonUpdater;
 
 public class MTGSearcher extends Searcher {
 	
+	private static String[] cull_list = {"Vanguard", "Conspiracy", "Phenomenon", "Plane", "Scheme"};
+	
 	public List<JSONObject> findCardListByName(String card){
 		
 		List<JSONObject> results = new ArrayList<JSONObject>();
@@ -23,26 +25,42 @@ public class MTGSearcher extends Searcher {
 			
 			String name = (String) key;
 			
+			JSONObject card_data = (JSONObject)data.get(key);
+			
 			//If we find an exact match, just return that.
-			if(StringUtils.equalsIgnoreCase(name, card)){
+						
+			if(StringUtils.equalsIgnoreCase(name, card) && !StringUtils.containsAny((String) card_data.get("type"), cull_list)){
 				//Make sure we are not returning anything else.
+				//We have the exact card we want.
 				results.clear();
-				results.add((JSONObject)data.get(key));
+				results.add(card_data);
+				System.out.println(name);
 				return results;
 			}
 			//Get the difference between this string and the target string as a percentage.
 			double dist = StringUtils.getJaroWinklerDistance(card, name);
 			
+			
 			if(dist > EDIT_DISTANCE_THRESHOLD){
-				edit_distance_matches.add(new DataStoreJWDist((JSONObject) data.get(key), dist));
+				edit_distance_matches.add(new DataStoreJWDist(card_data, dist));
+			}
+			else if(name.contains(",")){
+				String substring_title = name.split(",")[0];
+				//System.out.println(substring_title);
+				double substring_dist = StringUtils.getJaroWinklerDistance(card, substring_title);
+				
+				if(substring_dist > EDIT_DISTANCE_THRESHOLD){
+					edit_distance_matches.add(new DataStoreJWDist(card_data, substring_dist));
+				}
 			}
 			//Also if there is an exact substring.
 			else if (StringUtils.containsIgnoreCase(name, card)){
-				results.add((JSONObject)data.get(key));
-				
+				results.add(card_data);
 			}
 		}
-		
+		System.out.println("Starting Culling");
+		results = cullSpecialCardTypes(results);
+		System.out.println("Finished Culling");
 		
 		results.addAll(DataStoreJWDist.getSortedList(edit_distance_matches, -1));
 		
@@ -51,6 +69,23 @@ public class MTGSearcher extends Searcher {
 		
 		
 		return getResultSubList(results);
+	}
+	
+	private static List<JSONObject> cullSpecialCardTypes(List<JSONObject> results){
+		
+		List<JSONObject> culled_results = new ArrayList<JSONObject>();
+		System.out.println(results);
+		for(JSONObject obj : results){
+			String type_line = (String) obj.get("type");
+			System.out.println(type_line);
+			if(!StringUtils.containsAny(type_line, cull_list)){
+				System.out.println("Culled");
+				culled_results.add(obj);
+			}
+			
+		}
+		
+		return culled_results;
 	}
 	
 	private static int sortByLegendary(JSONObject c1, JSONObject c2){
