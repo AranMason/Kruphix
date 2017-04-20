@@ -26,8 +26,6 @@ public abstract class Searcher {
 		String[] s = new String[cardData.size()];
 		int i = 0;
 		for(JSONObject obj : cardData){
-			if(i > 5)
-				break;
 			s[i++] = cardToString(obj);
 		}
 		return s;

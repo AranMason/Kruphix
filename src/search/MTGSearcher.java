@@ -71,6 +71,11 @@ public class MTGSearcher extends Searcher {
 		return getResultSubList(results);
 	}
 	
+	/**
+	 * Culls special cards types that can clutter results.
+	 * @param results
+	 * @return
+	 */
 	private static List<JSONObject> cullSpecialCardTypes(List<JSONObject> results){
 		
 		List<JSONObject> culled_results = new ArrayList<JSONObject>();
@@ -88,6 +93,13 @@ public class MTGSearcher extends Searcher {
 		return culled_results;
 	}
 	
+	
+	/**
+	 * Sorts the list prioritizing legendary, named cards
+	 * @param c1
+	 * @param c2
+	 * @return
+	 */
 	private static int sortByLegendary(JSONObject c1, JSONObject c2){
 		int sum = 0;
 		
@@ -109,6 +121,7 @@ public class MTGSearcher extends Searcher {
 		String cost = (String) card.get("manaCost");
 		String text = (String) card.get("text");
 		String type = (String) card.get("type");
+		String layout = (String) card.get("layout");
 		
 		if(cost == null)
 			cost = "";
@@ -130,6 +143,20 @@ public class MTGSearcher extends Searcher {
 		}
 		
 		reply += text;
+			
+		if(StringUtils.equalsIgnoreCase(layout, "double-faced")
+				|| StringUtils.equalsIgnoreCase(layout, "flip")){
+			
+			JSONArray names = (JSONArray)card.get("names");
+			Object[] array = names.toArray();
+			String flip_name = (String)array[1];
+			
+			if(StringUtils.equals(name, flip_name)){
+				flip_name = (String)array[0];
+			}
+			
+			reply += "\n\n*The other side is **" + flip_name + "***\n";
+		}
 		
 		return reply;
 	}
