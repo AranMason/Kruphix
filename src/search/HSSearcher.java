@@ -3,6 +3,7 @@ package search;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
@@ -25,20 +26,21 @@ public class HSSearcher extends Searcher{
 		Iterator<JSONObject> hs_search = hs_data.iterator();
 		while(hs_search.hasNext()){
 			JSONObject next = hs_search.next();
-			
-			String name = (String)next.get("name");
-			
-			if(StringUtils.equalsIgnoreCase(name, card)){
-				List<JSONObject> result = new ArrayList<JSONObject>();
-				result.add(next);
-				return result;
-			}
-			else if(StringUtils.containsIgnoreCase(name, card)){
-				substring_matches.add(next);
-			} else{
-				double edit_dist = StringUtils.getJaroWinklerDistance(name, card);
-				if(edit_dist > EDIT_DISTANCE_THRESHOLD){
-					edit_dist_matches.add(new DataStoreJWDist(next, edit_dist));
+			String name = (String) next.get("name");
+			//if name is null ignore the card
+			if(name!= null){
+				if(StringUtils.equalsIgnoreCase(name, card)){
+					List<JSONObject> result = new ArrayList<JSONObject>();
+					result.add(next);
+					return result;
+				}
+				else if(StringUtils.containsIgnoreCase(name, card)){
+					substring_matches.add(next);
+				} else{
+					double edit_dist = StringUtils.getJaroWinklerDistance(name, card);
+					if(edit_dist > EDIT_DISTANCE_THRESHOLD){
+						edit_dist_matches.add(new DataStoreJWDist(next, edit_dist));
+					}
 				}
 			}
 		}
@@ -50,9 +52,9 @@ public class HSSearcher extends Searcher{
 
 	@Override
 	public String cardToString(JSONObject card) {
-		String name = (String)card.get("name");
-		String text = fixBolding((String)card.get("text"));
-		String type = (String)card.get("type");
+		String name = (String) card.get("name");
+		String text = (card.get("text") != null ? fixBolding((String)card.get("text")) :"ERROR: Card Text Missing"); 
+		String type = (String)(card.get("type"));
 		
 		String output = "**" + name + "**" + (card.containsKey("cost") ? (" - " + card.get("cost")) : "") + "\n" +
 				type + "\n" +
@@ -69,6 +71,8 @@ public class HSSearcher extends Searcher{
 	}
 	
 	private String fixBolding(String text){
+		text = text.replaceAll("<i>", "");
+		text = text.replaceAll("</i>", "");
 		return text.replaceAll("<\\/*b>", "**");
 	}
 	
